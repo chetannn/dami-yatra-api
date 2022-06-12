@@ -3,6 +3,8 @@
 use App\Http\Controllers\EmailVerificationNotificationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\NewPasswordController;
+use App\Http\Controllers\PasswordResetLinkController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UpdateProfileController;
 use App\Http\Controllers\VerifyEmailController;
@@ -36,4 +38,12 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/login', LoginController::class);
 Route::post('/register', RegisterController::class);
 Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)->name('verification.verify');
+
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+    ->middleware(['guest:'. 'web'])
+    ->name('password.email');
+
+Route::post('/reset-password', [NewPasswordController::class, 'store'])
+    ->middleware(['guest:'. 'web'])
+    ->name('password.update');
 

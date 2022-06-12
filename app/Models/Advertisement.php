@@ -11,7 +11,12 @@ class Advertisement extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'title',
+        'description',
+        'is_published',
+        'ad_end_date'
+    ];
 
     public function tags() : MorphMany
     {

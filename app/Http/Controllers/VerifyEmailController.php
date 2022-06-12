@@ -18,11 +18,11 @@ class VerifyEmailController extends Controller
                 $user->markEmailAsVerified();
                 event(new Verified($user));
 
-                request()->wantsJson() ? new JsonResponse([], 204)
-                    : redirect(url(env('FRONTEND_URL')) . '/customer?verified=1' );
+                return request()->wantsJson() ? new JsonResponse([], 204)
+                    : redirect(url(env('FRONTEND_URL')) . '/app?verified=1' );
             }
 
-            request()->wantsJson() ? new JsonResponse([], 204)
-                : redirect(url(env('FRONTEND_URL')) . '/customer?verified=1' );
+            return request()->wantsJson() ? new JsonResponse([], 204)
+                : redirect(url(env('FRONTEND_URL')) . '/app?verified=1' );
         }
 }
