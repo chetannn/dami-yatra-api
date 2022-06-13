@@ -55,6 +55,15 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'linode' => [
+            'driver' => 's3',
+            'key' => env('LINODE_KEY'),
+            'secret' => env('LINODE_SECRET'),
+            'endpoint' => env('LINODE_ENDPOINT'),
+            'region' => env('LINODE_REGION'),
+            'bucket' => env('LINODE_BUCKET'),
+            'visibility' => 'public',
+        ]
 
     ],
 

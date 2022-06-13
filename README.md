@@ -11,6 +11,7 @@
 * [x] Password Reset
 * [x] Get User Profile API (need to revisit once)
 * [x] Update User Profile API
+* [x] Update User Password API
 
 ### Vendor
 * [x] Advertisement create API

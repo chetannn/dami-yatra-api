@@ -4,6 +4,7 @@ use App\Http\Controllers\EmailVerificationNotificationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\NewPasswordController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\PasswordResetLinkController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UpdateProfileController;
@@ -31,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', LogoutController::class);
     Route::post('/update-profile', UpdateProfileController::class);
     Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store']);
+    Route::put('/user/password', [PasswordController::class, 'update']);
 
 });
 
