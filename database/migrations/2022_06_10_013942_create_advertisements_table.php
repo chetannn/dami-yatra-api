@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('description');
-            $table->date('ad_end_date');
+            $table->date('ad_end_date')->nullable();
             $table->boolean('is_published')->default(0);
+            $table->string('itinerary_file')->nullable();
             $table->foreignId('vendor_id')->constrained('vendors');
             $table->timestamps();
         });

@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Vendor;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdvertisementRequest;
 use App\Models\Advertisement;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdvertisementController extends Controller
@@ -23,31 +26,34 @@ class AdvertisementController extends Controller
             ->paginate(request('per_page', 10));
     }
 
-    public function store(Request $request) : JsonResponse
+    public function store(AdvertisementRequest $request) : JsonResponse
     {
-       $validated = $request->validate([
-            'title' => 'required',
-            'description' => ['required', 'max:200'],
-            'tags' => 'required',
-            'tags.*' => ['required'],
-            'is_published' => ['integer', 'between:0,1'],
-            'ad_end_date' => ['required_if:is_published,1', 'date']
-        ]);
-
        try {
 
            DB::beginTransaction();
 
+           $filePath = null;
+
            $advertisement = auth()->user()->vendor()
                 ->first()
                ->advertisements()
-               ->create(Arr::except($validated, 'tags'));
+               ->create(Arr::except($request->all(), 'tags'));
 
            $tags = $request->input('tags');
 
            $advertisement->tags()->createMany(array_map(fn($tag) => ['name' => $tag], $tags));
 
-          DB::commit();
+           if($request->hasFile('itinerary_file')) {
+             $filePath = Storage::putFile('itinerary_files/' . $advertisement->id, $request->file('itinerary_file'));
+           }
+
+           if($filePath) {
+               $advertisement->update([
+                   'itinerary_file' => $filePath
+               ]);
+           }
+
+           DB::commit();
 
           return new JsonResponse([], Response::HTTP_CREATED);
 
@@ -62,24 +68,26 @@ class AdvertisementController extends Controller
 
     }
 
-    public function update(Advertisement $advertisement, Request $request) : JsonResponse
+    public function update(AdvertisementRequest $request, Advertisement $advertisement) : JsonResponse
     {
         abort_if($advertisement->vendor_id != auth()->user()->vendor()->first()->id, Response::HTTP_FORBIDDEN);
 
-        $validated = $request->validate([
-            'title' => 'required',
-            'description' => ['required', 'max:200'],
-            'tags' => 'required',
-            'tags.*' => ['required'],
-            'is_published' => ['integer', 'between:0,1'],
-            'ad_end_date' => ['required_if:is_published,1', 'date']
-        ]);
-
         try {
+
+            $filePath = null;
 
             DB::beginTransaction();
 
-            $advertisement->update(Arr::except($validated, 'tags'));
+            if($request->hasFile('itinerary_file')) {
+                Storage::delete($advertisement->itinerary_file);
+
+                $filePath = Storage::putFile('itinerary_files/' . $advertisement->id, $request->file('itinerary_file'));
+
+            }
+
+            $advertisement->update(Arr::except($request->all(), 'tags') + [
+                    'itinerary_file' => $filePath
+                ]);
 
             $tags = $request->input('tags');
 
@@ -98,6 +106,11 @@ class AdvertisementController extends Controller
             return new JsonResponse($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
+    }
+
+    public function show(Advertisement $advertisement) : JsonResponse
+    {
+        return new JsonResponse($advertisement->load('tags:id,name,taggable_id'));
     }
 
     public function destroy(Advertisement $advertisement) : JsonResponse

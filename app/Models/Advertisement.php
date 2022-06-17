@@ -15,7 +15,8 @@ class Advertisement extends Model
         'title',
         'description',
         'is_published',
-        'ad_end_date'
+        'ad_end_date',
+        'itinerary_file',
     ];
 
     public function tags() : MorphMany

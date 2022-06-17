@@ -7,7 +7,9 @@ use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AdvertisementControllerTest extends TestCase
@@ -19,14 +21,13 @@ class AdvertisementControllerTest extends TestCase
     public function test_vendor_can_create_advertisement()
     {
         $user = User::factory()->create();
-
         Vendor::factory()->for($user)->create();
 
         $payload = [
             'title' => $this->faker->sentence(2),
             'description' => $this->faker->sentence(5),
             'ad_end_date' => now()->format('Y-m-d'),
-            'is_published' => 1,
+            'is_published' => true,
             'tags' => [
                 'Pokhara',
                 'Rara',
@@ -38,6 +39,40 @@ class AdvertisementControllerTest extends TestCase
             ->actingAs($user)
             ->postJson(route('vendor.advertisement.store'), $payload)
             ->assertCreated();
+
+    }
+
+    public function test_vendor_can_upload_itinerary_file_while_creating_advertisement()
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        Vendor::factory()->for($user)->create();
+
+        $file = UploadedFile::fake()->create('test.pdf', 2048);
+
+        $payload = [
+            'title' => $this->faker->sentence(2),
+            'description' => $this->faker->sentence(5),
+            'ad_end_date' => now()->format('Y-m-d'),
+            'is_published' => 1,
+            'tags' => [
+                'Pokhara',
+                'Rara',
+                'TravelNepal'
+            ],
+            'file' => $file
+        ];
+
+            $this
+            ->actingAs($user)
+            ->post(route('vendor.advertisement.store'), $payload)
+            ->assertCreated();
+
+         $advertisement = Advertisement::first();
+
+        Storage::disk('local')->assertExists($advertisement->itinerary_file);
+        $this->assertFileEquals($file, Storage::disk('local')->path($advertisement->itinerary_file));
 
     }
 
