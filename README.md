@@ -12,6 +12,7 @@
 * [x] Get User Profile API (need to revisit once)
 * [x] Update User Profile API
 * [x] Update User Password API
+* [x] Profile picture update API
 
 ### Vendor
 * [x] Advertisement create API
@@ -26,11 +27,11 @@
 * [] Analytics API for all the advertisement
 
 ### Customer
-* [] List of all advertisements
-* [] View single advertisement
+* [x] List of all advertisements
+* [x] View single advertisement
 * [] Advertisement View Tracking API
-* [] Add an advertisement to saved list API
-* [] List all the saved advertisement API
+* [x] Add an advertisement to saved list API
+* [x] List all the saved advertisement API
 * [] Customer can message vendor for a specific advertisement
 * [] Customer can view all of their notifications
 * [] Add Review to vendor after tour has successfully completed API

@@ -1,10 +1,16 @@
 <?php
 
+use App\Http\Controllers\Customer\AdvertisementController;
+use App\Http\Controllers\Customer\SavedAdvertisementController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-
+    Route::get('/advertisements', [AdvertisementController::class, 'index']);
+    Route::get('/advertisements/{advertisement}', [AdvertisementController::class, 'show']);
+    Route::post('/advertisements/views/{advertisement}', [AdvertisementController::class, 'show']);
+    Route::get('/saved-advertisements', [SavedAdvertisementController::class, 'index']);
+    Route::post('/saved-advertisements', [SavedAdvertisementController::class, 'toggle']);
 });
 
 

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Customer extends Model
@@ -22,5 +24,16 @@ class Customer extends Model
     {
         return $this->morphMany(Notification::class, 'notifiable');
     }
+
+    public function savedAdvertisements() : HasMany
+    {
+        return $this->hasMany(SavedAdvertisement::class);
+    }
+
+    public function views() : BelongsToMany
+    {
+        return $this->belongsToMany(Advertisement::class, 'advertisement_customer_views');
+    }
+
 
 }

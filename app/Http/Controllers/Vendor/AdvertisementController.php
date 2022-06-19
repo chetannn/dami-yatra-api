@@ -26,7 +26,8 @@ class AdvertisementController extends Controller
             ->advertisements()
             ->when(request()->has('is_published'),
                 fn(Builder $builder) => $builder->where('is_published', request()->boolean('is_published')))
-            ->paginate(request('per_page', 10));
+           ->latest()
+            ->paginate(request('per_page', 6));
     }
 
     public function store(AdvertisementRequest $request) : JsonResponse
