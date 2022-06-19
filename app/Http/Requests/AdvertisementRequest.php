@@ -28,7 +28,7 @@ class AdvertisementRequest extends FormRequest
             'description' => ['required', 'max:200'],
             'tags' => 'required',
             'tags.*' => ['required'],
-            'is_published' => ['integer', 'between:0,1'],
+            'is_published' => ['boolean', 'required'],
             'ad_end_date' => ['nullable', 'required_if:is_published,1', 'date'],
             'itinerary_file' => ['nullable', 'file', 'max:2048', 'mimes:docx,pdf,jpg']
         ];

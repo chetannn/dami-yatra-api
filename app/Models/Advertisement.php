@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Advertisement extends Model
@@ -19,9 +20,9 @@ class Advertisement extends Model
         'itinerary_file',
     ];
 
-    public function tags() : MorphMany
+    public function tags() : BelongsToMany
     {
-        return $this->morphMany(Tag::class, 'taggable');
+        return $this->belongsToMany(Tag::class, 'advertisements_tags');
     }
 
     public function vendor() : BelongsTo

@@ -55,7 +55,7 @@ class AdvertisementControllerTest extends TestCase
             'title' => $this->faker->sentence(2),
             'description' => $this->faker->sentence(5),
             'ad_end_date' => now()->format('Y-m-d'),
-            'is_published' => 1,
+            'is_published' => true,
             'tags' => [
                 'Pokhara',
                 'Rara',
@@ -139,7 +139,7 @@ class AdvertisementControllerTest extends TestCase
             'title' => $this->faker->sentence,
            'description' => $this->faker->sentence(6),
            'ad_end_date' => now()->addHours(2)->format('Y-m-d'),
-           'is_published' => 1,
+           'is_published' => 0,
            'tags' => [
                'Pokhara',
                'Rara',
@@ -147,12 +147,13 @@ class AdvertisementControllerTest extends TestCase
            ]
        ];
 
-        $this
+            $this
             ->actingAs($user)
             ->putJson(route('vendor.advertisement.update', [
                 'advertisement' => $advertisement->id
             ]), $payload)
             ->assertOk();
+
 
         $this->assertDatabaseCount('advertisements', 1);
         $this->assertDatabaseHas('advertisements', Arr::except($payload, 'tags') + [
@@ -205,6 +206,12 @@ class AdvertisementControllerTest extends TestCase
             ->count(4)
             ->create();
 
+        Advertisement::factory()
+            ->for($vendor)
+            ->count(4)
+            ->create(['is_published' => true]);
+
+
         $unAuthorizedUser =  User::factory()->create();
         $unAuthorizedVendor = Vendor::factory()->for($unAuthorizedUser)->create();
 
@@ -213,11 +220,36 @@ class AdvertisementControllerTest extends TestCase
             ->count(2)
             ->create();
 
-            $this
+           $this
             ->actingAs($user)
             ->getJson(route('vendor.advertisement.index'))
             ->assertOk()
+            ->assertJsonCount(8, 'data');
+    }
+
+    public function test_vendor_can_see_all_of_his_drafts_advertisements()
+    {
+        $user = User::factory()->create();
+        $vendor = Vendor::factory()->for($user)->create();
+
+        Advertisement::factory()
+            ->for($vendor)
+            ->count(4)
+            ->create(['is_published' => false]);
+
+        Advertisement::factory()
+            ->for($vendor)
+            ->count(4)
+            ->create(['is_published' => true]);
+
+        $this
+            ->actingAs($user)
+            ->getJson(route('vendor.advertisement.index', [
+                'is_published' => false
+            ]))
+            ->assertOk()
             ->assertJsonCount(4, 'data');
+
     }
 
 }

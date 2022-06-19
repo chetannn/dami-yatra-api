@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Vendor;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdvertisementRequest;
 use App\Models\Advertisement;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -19,10 +20,12 @@ class AdvertisementController extends Controller
 
     public function index() : LengthAwarePaginator
     {
-        return auth()->user()
+       return auth()->user()
             ->vendor()
             ->first()
             ->advertisements()
+            ->when(request()->has('is_published'),
+                fn(Builder $builder) => $builder->where('is_published', request()->boolean('is_published')))
             ->paginate(request('per_page', 10));
     }
 
@@ -41,7 +44,9 @@ class AdvertisementController extends Controller
 
            $tags = $request->input('tags');
 
-           $advertisement->tags()->createMany(array_map(fn($tag) => ['name' => $tag], $tags));
+           if(isset($tags)) {
+               $advertisement->tags()->createMany(array_map(fn($tag) => ['name' => $tag], $tags));
+           }
 
            if($request->hasFile('itinerary_file')) {
              $filePath = Storage::putFile('itinerary_files/' . $advertisement->id, $request->file('itinerary_file'));
@@ -91,7 +96,10 @@ class AdvertisementController extends Controller
 
             $tags = $request->input('tags');
 
-            $advertisement->tags()->createMany(array_map(fn($tag) => ['name' => $tag], $tags));
+            if(isset($tags)) {
+                $advertisement->tags()->detach();
+                $advertisement->tags()->createMany(array_map(fn($tag) => ['name' => $tag], $tags));
+            }
 
             DB::commit();
 
@@ -110,7 +118,7 @@ class AdvertisementController extends Controller
 
     public function show(Advertisement $advertisement) : JsonResponse
     {
-        return new JsonResponse($advertisement->load('tags:id,name,taggable_id'));
+        return new JsonResponse($advertisement->load('tags'));
     }
 
     public function destroy(Advertisement $advertisement) : JsonResponse

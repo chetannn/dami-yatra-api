@@ -23,6 +23,13 @@ return new class extends Migration
             $table->foreignId('vendor_id')->constrained('vendors');
             $table->timestamps();
         });
+
+        Schema::create('advertisements_tags', function (Blueprint $table) {
+            $table->foreignId('advertisement_id')->index();
+            $table->foreignId('tag_id')->index();
+
+            $table->unique(['advertisement_id', 'tag_id']);
+        });
     }
 
     /**
