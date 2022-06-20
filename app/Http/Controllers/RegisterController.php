@@ -27,6 +27,23 @@ class RegisterController extends Controller
                'name' => $request->input('first_name') . ' ' . $request->input('last_name')
            ]));
 
+       if($user->type == 0) {
+           $user->customer()->create([
+               'first_name' => $user->first_name,
+               'last_name' => $user->last_name,
+               'email' => $user->email,
+               'name' => $user->name,
+           ]);
+       }
+       else if($user->type == 1) {
+           $user->vendor()->create([
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'email' => $user->email,
+                'name' => $user->name,
+           ]);
+       }
+
        event(new Registered($user));
 
        auth()->login($user);
