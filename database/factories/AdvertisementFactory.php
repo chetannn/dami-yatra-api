@@ -23,6 +23,8 @@ class AdvertisementFactory extends Factory
             'description' => $this->faker->sentence(5),
             'ad_end_date' => now()->format('Y-m-d'),
             'is_published' => false,
+            'price' => $this->faker->randomDigit,
+            'duration' => '4 Night 5 Days'
         ];
     }
 }

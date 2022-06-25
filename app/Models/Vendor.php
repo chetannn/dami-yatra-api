@@ -29,4 +29,10 @@ class Vendor extends Model
         return $this->morphMany(Notification::class, 'notifiable');
     }
 
+    public function coupons() : HasMany
+    {
+        return $this->hasMany(Coupon::class);
+    }
+
+
 }

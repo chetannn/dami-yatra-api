@@ -25,9 +25,9 @@ class Customer extends Model
         return $this->morphMany(Notification::class, 'notifiable');
     }
 
-    public function savedAdvertisements() : HasMany
+    public function savedAdvertisements() : BelongsToMany
     {
-        return $this->hasMany(SavedAdvertisement::class);
+        return $this->belongsToMany(Advertisement::class, 'saved_advertisements');
     }
 
     public function views() : BelongsToMany

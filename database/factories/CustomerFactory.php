@@ -19,6 +19,9 @@ class CustomerFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => $this->faker->unique()->safeEmail(),
         ];
     }
 }

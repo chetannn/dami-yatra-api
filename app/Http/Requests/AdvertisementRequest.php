@@ -30,7 +30,9 @@ class AdvertisementRequest extends FormRequest
             'tags.*' => ['required'],
             'is_published' => ['boolean', 'required'],
             'ad_end_date' => ['nullable', 'required_if:is_published,1', 'date'],
-            'itinerary_file' => ['nullable', 'file', 'max:2048', 'mimes:docx,pdf,jpg']
-        ];
+            'itinerary_file' => ['nullable', 'file', 'max:2048', 'mimes:docx,pdf,jpg'],
+            'duration' => ['string', 'required'],
+            'price' => ['required']
+         ];
     }
 }

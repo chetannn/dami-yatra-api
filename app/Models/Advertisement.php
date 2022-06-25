@@ -18,6 +18,8 @@ class Advertisement extends Model
         'is_published',
         'ad_end_date',
         'itinerary_file',
+        'duration',
+        'price'
     ];
 
     public function tags() : BelongsToMany

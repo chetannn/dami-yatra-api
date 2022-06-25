@@ -10,7 +10,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/advertisements/{advertisement}', [AdvertisementController::class, 'show']);
     Route::post('/advertisements/views/{advertisement}', [AdvertisementController::class, 'show']);
     Route::get('/saved-advertisements', [SavedAdvertisementController::class, 'index']);
-    Route::post('/saved-advertisements', [SavedAdvertisementController::class, 'toggle']);
+    Route::post('/saved-advertisements/toggle', [SavedAdvertisementController::class, 'toggle'])->name('saved_advertisements.toggle');
 });
 
 

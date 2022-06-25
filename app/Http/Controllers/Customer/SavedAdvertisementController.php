@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
-use App\Models\Advertisement;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -25,21 +24,8 @@ class SavedAdvertisementController extends Controller
             'advertisement_id' => ['required', Rule::exists('advertisements', 'id')]
         ]);
 
-        if(auth()->user()->customer()->first()
-            ->savedAdvertisements()->where('advertisement_id', $validated['advertisement_id'])->exists()) {
-
-            auth()->user()->customer()->first()
-                ->savedAdvertisements()
-                ->where('advertisement_id', $validated['advertisement_id'])
-                ->delete();
-        }
-        else {
-            auth()->user()->customer()->first()
-                ->savedAdvertisements()
-                ->create([
-                    'advertisement_id' => $validated['advertisement_id']
-                ]);
-        }
+        auth()->user()->customer()->first()
+            ->savedAdvertisements()->toggle($validated['advertisement_id']);
 
         return new JsonResponse(true);
     }
