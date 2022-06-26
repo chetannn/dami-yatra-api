@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Storage;
 
 class Advertisement extends Model
 {
@@ -23,6 +24,14 @@ class Advertisement extends Model
         'cover_image_path',
     ];
 
+    protected $appends = [
+        'cover_image_path_url'
+    ];
+
+    protected $casts = [
+        'is_published' => 'boolean'
+    ];
+
     public function tags() : BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'advertisements_tags');
@@ -32,4 +41,10 @@ class Advertisement extends Model
     {
         return $this->belongsTo(Vendor::class);
     }
+
+    public function getCoverImagePathUrlAttribute()
+    {
+        return $this->cover_image_path ? Storage::disk(config('FILESYSTEM_DISK'))->url($this->cover_image_path) : null;
+    }
+
 }
