@@ -37,6 +37,7 @@ class AdvertisementController extends Controller
            DB::beginTransaction();
 
            $filePath = null;
+           $coverImagePath = null;
 
            $advertisement = auth()->user()->vendor()
                 ->first()
@@ -50,12 +51,23 @@ class AdvertisementController extends Controller
            }
 
            if($request->hasFile('itinerary_file')) {
-             $filePath = Storage::putFile('itinerary_files/' . $advertisement->id, $request->file('itinerary_file'));
+             $filePath = Storage::putFile("advertisements/{$advertisement->id}/itinerary_file", $request->file('itinerary_file'));
            }
 
-           if($filePath) {
+           if($request->hasFile('cover_image')) {
+               $coverImagePath = Storage::putFile("advertisements/{$advertisement->id}/cover_photo", $request->file('cover_image'));
+           }
+
+           if(filled($filePath)) {
                $advertisement->update([
-                   'itinerary_file' => $filePath
+                   'itinerary_file' => $filePath,
+                   'cover_image_path' => $coverImagePath
+               ]);
+           }
+
+           if(filled($coverImagePath)) {
+               $advertisement->update([
+                   'cover_image_path' => $coverImagePath
                ]);
            }
 

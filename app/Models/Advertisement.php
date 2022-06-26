@@ -19,7 +19,8 @@ class Advertisement extends Model
         'ad_end_date',
         'itinerary_file',
         'duration',
-        'price'
+        'price',
+        'cover_image_path',
     ];
 
     public function tags() : BelongsToMany
