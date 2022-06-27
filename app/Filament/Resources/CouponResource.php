@@ -22,10 +22,10 @@ class CouponResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('Name'),
-                Forms\Components\TextInput::make('Discount Rate'),
-                Forms\Components\TextInput::make('Limit'),
-                Forms\Components\DatePicker::make('Expiration Date'),
+                Forms\Components\TextInput::make('name'),
+                Forms\Components\TextInput::make('discount_rate'),
+                Forms\Components\TextInput::make('limit'),
+                Forms\Components\DatePicker::make('expiration_date'),
                 Forms\Components\Select::make('vendor_id')
                     ->label('Vendor')
                     ->options(Vendor::all()->pluck('first_name', 'id'))

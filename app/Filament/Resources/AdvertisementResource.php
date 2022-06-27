@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AdvertisementResource\Pages;
 use App\Filament\Resources\AdvertisementResource\RelationManagers;
 use App\Models\Advertisement;
+use App\Models\Vendor;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -22,13 +23,17 @@ class AdvertisementResource extends Resource
         return $form
             ->schema([
                 Forms\Components\FileUpload::make('Itinerary File'),
-                Forms\Components\FileUpload::make('Cover Image'),
-                Forms\Components\TextInput::make('Title'),
-                Forms\Components\TextInput::make('Price'),
-                Forms\Components\TextInput::make('Duration'),
-                Forms\Components\DatePicker::make('Advertisement End Date'),
-                Forms\Components\Textarea::make('Description'),
-                Forms\Components\Toggle::make('Is Published'),
+                Forms\Components\FileUpload::make('cover_image'),
+                Forms\Components\TextInput::make('title'),
+                Forms\Components\TextInput::make('price'),
+                Forms\Components\TextInput::make('duration'),
+                Forms\Components\DatePicker::make('ad_end_date'),
+                Forms\Components\Textarea::make('description'),
+                Forms\Components\Select::make('vendor_id')
+                    ->label('Vendor')
+                    ->options(Vendor::all()->pluck('first_name', 'id'))
+                    ->searchable(),
+                Forms\Components\Toggle::make('is_published'),
             ]);
     }
 
@@ -39,7 +44,8 @@ class AdvertisementResource extends Resource
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\TextColumn::make('price'),
-                Tables\Columns\TextColumn::make('duration')
+                Tables\Columns\TextColumn::make('duration'),
+                Tables\Columns\TextColumn::make('vendor.first_name')
             ])
             ->filters([
                 //

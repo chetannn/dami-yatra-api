@@ -21,9 +21,9 @@ class VendorResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('First Name'),
-                Forms\Components\TextInput::make('Last Name'),
-                Forms\Components\TextInput::make('Email')
+                Forms\Components\TextInput::make('first_name'),
+                Forms\Components\TextInput::make('last_name'),
+                Forms\Components\TextInput::make('email')
             ]);
     }
 
