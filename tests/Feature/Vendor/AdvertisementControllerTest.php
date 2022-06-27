@@ -22,34 +22,8 @@ class AdvertisementControllerTest extends TestCase
     {
         $user = User::factory()->create();
         Vendor::factory()->for($user)->create();
+        $coverImage = UploadedFile::fake()->image('cover.jpg', 400, 400);
 
-        $payload = [
-            'title' => $this->faker->sentence(2),
-            'description' => $this->faker->sentence(5),
-            'ad_end_date' => now()->format('Y-m-d'),
-            'is_published' => true,
-            'tags' => [
-                'Pokhara',
-                'Rara',
-                'TravelNepal'
-            ]
-        ];
-
-        $this
-            ->actingAs($user)
-            ->postJson(route('vendor.advertisement.store'), $payload)
-            ->assertCreated();
-
-    }
-
-    public function test_vendor_can_upload_itinerary_file_while_creating_advertisement()
-    {
-        Storage::fake('local');
-
-        $user = User::factory()->create();
-        Vendor::factory()->for($user)->create();
-
-        $file = UploadedFile::fake()->create('test.pdf', 2048);
 
         $payload = [
             'title' => $this->faker->sentence(2),
@@ -61,18 +35,56 @@ class AdvertisementControllerTest extends TestCase
                 'Rara',
                 'TravelNepal'
             ],
-            'file' => $file
+            'cover_image' => $coverImage,
+            'duration' => '4 Nights 5 Days',
+            'price' => 8500
+        ];
+
+        $this
+            ->actingAs($user)
+            ->postJson(route('vendor.advertisement.store'), $payload)
+            ->assertCreated();
+
+    }
+
+    public function test_vendor_can_upload_itinerary_file_and_cover_image_while_creating_advertisement()
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        Vendor::factory()->for($user)->create();
+
+        $file = UploadedFile::fake()->create('test.pdf', 2048);
+        $coverImage = UploadedFile::fake()->image('cover.jpg', 400, 400);
+
+        $payload = [
+            'title' => $this->faker->sentence(2),
+            'description' => $this->faker->sentence(5),
+            'ad_end_date' => now()->format('Y-m-d'),
+            'is_published' => true,
+            'tags' => [
+                'Pokhara',
+                'Rara',
+                'TravelNepal'
+            ],
+            'itinerary_file' => $file,
+            'cover_image' => $coverImage,
+            'duration' => '4 Nights 5 Days',
+            'price' => 5000
         ];
 
             $this
             ->actingAs($user)
             ->post(route('vendor.advertisement.store'), $payload)
-            ->assertCreated();
+                ->assertCreated();
 
          $advertisement = Advertisement::first();
 
         Storage::disk('local')->assertExists($advertisement->itinerary_file);
+        Storage::disk('local')->assertExists($advertisement->cover_image_path);
+
         $this->assertFileEquals($file, Storage::disk('local')->path($advertisement->itinerary_file));
+        $this->assertFileEquals($coverImage, Storage::disk('local')->path($advertisement->cover_image_path));
 
     }
 
@@ -128,12 +140,18 @@ class AdvertisementControllerTest extends TestCase
 
     public function test_vendor_can_update_his_unpublished_advertisement()
     {
+        $this->withoutExceptionHandling();
+
+        Storage::fake('local');
+
         $user = User::factory()->create();
         $vendor = Vendor::factory()->for($user)->create();
 
        $advertisement = Advertisement::factory()
             ->for($vendor)
             ->create();
+
+        $coverImage = UploadedFile::fake()->image('cover.jpg', 400, 400);
 
        $payload = [
             'title' => $this->faker->sentence,
@@ -144,7 +162,11 @@ class AdvertisementControllerTest extends TestCase
                'Pokhara',
                'Rara',
                'TravelNepal'
-           ]
+           ],
+           'cover_image' => $coverImage,
+           'duration' => '4 Nights 5 Days',
+           'price' => 5000
+
        ];
 
             $this
@@ -156,7 +178,7 @@ class AdvertisementControllerTest extends TestCase
 
 
         $this->assertDatabaseCount('advertisements', 1);
-        $this->assertDatabaseHas('advertisements', Arr::except($payload, 'tags') + [
+        $this->assertDatabaseHas('advertisements', Arr::except($payload, ['tags', 'cover_image']) + [
                'vendor_id' => $vendor->id,
                 'id' => $advertisement->id
             ]);
@@ -175,6 +197,8 @@ class AdvertisementControllerTest extends TestCase
         $unAuthorizedUser =  User::factory()->create();
         Vendor::factory()->for($unAuthorizedUser)->create();
 
+        $coverImage = UploadedFile::fake()->image('cover.jpg', 400, 400);
+
         $payload = [
             'title' => $this->faker->sentence,
             'description' => $this->faker->sentence(6),
@@ -184,7 +208,11 @@ class AdvertisementControllerTest extends TestCase
                 'Pokhara',
                 'Rara',
                 'TravelNepal'
-            ]
+            ],
+            'cover_image' => $coverImage,
+            'duration' => '4 Nights 5 Days',
+            'price' => 5000
+
         ];
 
         $this
@@ -224,7 +252,7 @@ class AdvertisementControllerTest extends TestCase
             ->actingAs($user)
             ->getJson(route('vendor.advertisement.index'))
             ->assertOk()
-            ->assertJsonCount(8, 'data');
+            ->assertJsonPath('total', 8);
     }
 
     public function test_vendor_can_see_all_of_his_drafts_advertisements()

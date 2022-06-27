@@ -60,8 +60,7 @@ class AdvertisementController extends Controller
 
            if(filled($filePath)) {
                $advertisement->update([
-                   'itinerary_file' => $filePath,
-                   'cover_image_path' => $coverImagePath
+                   'itinerary_file' => $filePath
                ]);
            }
 
@@ -103,7 +102,7 @@ class AdvertisementController extends Controller
 
             }
 
-            $advertisement->update(Arr::except($request->all(), 'tags') + [
+            $advertisement->update(Arr::except($request->validated(), 'tags') + [
                     'itinerary_file' => $filePath
                 ]);
 

@@ -29,7 +29,8 @@ class Advertisement extends Model
     ];
 
     protected $casts = [
-        'is_published' => 'boolean'
+        'is_published' => 'boolean',
+        'ad_end_date' => 'timestamp'
     ];
 
     public function tags() : BelongsToMany
