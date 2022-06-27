@@ -21,7 +21,9 @@ class CustomerResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('First Name'),
+                Forms\Components\TextInput::make('Last Name'),
+                Forms\Components\TextInput::make('Email')
             ]);
     }
 
@@ -29,7 +31,9 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('first_name'),
+                Tables\Columns\TextColumn::make('last_name'),
+                Tables\Columns\TextColumn::make('email'),
             ])
             ->filters([
                 //

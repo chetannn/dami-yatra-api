@@ -140,7 +140,6 @@ class AdvertisementControllerTest extends TestCase
 
     public function test_vendor_can_update_his_unpublished_advertisement()
     {
-        $this->withoutExceptionHandling();
 
         Storage::fake('local');
 
