@@ -15,7 +15,7 @@ class AdvertisementController extends Controller
        return Advertisement::query()
             ->with(['vendor', 'tags'])
             ->latest()
-            ->paginate(request('per_page', 10));
+            ->paginate(request('per_page', 6));
     }
 
     public function show(Advertisement $advertisement) : JsonResponse
