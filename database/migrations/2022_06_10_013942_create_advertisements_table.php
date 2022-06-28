@@ -19,6 +19,7 @@ return new class extends Migration
             $table->longText('description');
             $table->date('ad_end_date')->nullable();
             $table->boolean('is_published')->default(0);
+            $table->tinyInteger('status')->default(0);
             $table->float('price');
             $table->string('duration');
             $table->string('itinerary_file')->nullable();

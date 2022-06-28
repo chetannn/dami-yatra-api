@@ -22,6 +22,7 @@ class Advertisement extends Model
         'duration',
         'price',
         'cover_image_path',
+        'status'
     ];
 
     protected $appends = [
@@ -30,7 +31,7 @@ class Advertisement extends Model
 
     protected $casts = [
         'is_published' => 'boolean',
-        'ad_end_date' => 'timestamp'
+        'ad_end_date' => 'date'
     ];
 
     public function tags() : BelongsToMany
