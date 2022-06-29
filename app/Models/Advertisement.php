@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class Advertisement extends Model
@@ -48,5 +50,22 @@ class Advertisement extends Model
     {
         return $this->cover_image_path ? Storage::disk(config('FILESYSTEM_DISK'))->url($this->cover_image_path) : null;
     }
+
+    public function scopeWithIsFavorite(Builder $query, Customer $customer)
+    {
+        $query->addSelect([
+            'is_favorite' => DB::table('saved_advertisements')
+                            ->selectRaw('COUNT(advertisement_id) > 0')
+                             ->whereColumn('advertisements.id', '=', 'advertisement_id')
+                             ->where('customer_id', $customer->id)
+                             ->limit(1)
+        ])->withCasts(['is_favorite' => 'bool']);
+    }
+
+    public function favoritedBy() : BelongsToMany
+    {
+        return $this->belongsToMany(Customer::class, 'saved_advertisements', 'advertisement_id');
+    }
+
 
 }
