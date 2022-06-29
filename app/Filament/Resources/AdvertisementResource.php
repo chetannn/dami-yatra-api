@@ -16,7 +16,7 @@ class AdvertisementResource extends Resource
 {
     protected static ?string $model = Advertisement::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-speakerphone';
 
     public static function form(Form $form): Form
     {
