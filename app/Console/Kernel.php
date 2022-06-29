@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\DisableExpiredAdvertisement;
 use App\Jobs\SendAdvertisementExpirationNotification;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -18,8 +19,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
 
-        $schedule->job(new SendAdvertisementExpirationNotification())
+        $schedule->job(new DisableExpiredAdvertisement())
             ->dailyAt('23:00');
+
+        $schedule->job(new SendAdvertisementExpirationNotification())
+            ->dailyAt('10:30');
     }
 
     /**

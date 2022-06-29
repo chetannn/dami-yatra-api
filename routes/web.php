@@ -18,5 +18,5 @@ Route::get('/', function () {
 });
 
 Route::get('/work', function () {
-    \App\Jobs\SendAdvertisementExpirationNotification::dispatch();
+    \App\Jobs\DisableExpiredAdvertisement::dispatch();
 });
