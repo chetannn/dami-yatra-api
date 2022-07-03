@@ -47,3 +47,6 @@
 
 
 ### Note: Search will be our main focus after all the implementing these apis will be look over it
+
+insurance covered or not
+packages includes

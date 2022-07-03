@@ -23,8 +23,11 @@ class Advertisement extends Model
         'itinerary_file',
         'duration',
         'price',
-        'cover_image_path',
-        'status'
+        'cover_image',
+        'status',
+        'clicks',
+        'quantity',
+        'tour_start_date',
     ];
 
     protected $appends = [
@@ -33,7 +36,8 @@ class Advertisement extends Model
 
     protected $casts = [
         'is_published' => 'boolean',
-        'ad_end_date' => 'date'
+        'ad_end_date' => 'date',
+        'tour_start_date' => 'date',
     ];
 
     public function tags() : BelongsToMany

@@ -17,12 +17,16 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('description');
+            $table->date('tour_start_date');
             $table->date('ad_end_date')->nullable();
+            $table->integer('quantity');
             $table->boolean('is_published')->default(0);
             $table->tinyInteger('status')->default(0);
             $table->float('price');
             $table->string('duration');
             $table->string('itinerary_file')->nullable();
+            $table->string('cover_image')->nullable();
+            $table->integer('clicks')->default(0);
             $table->foreignId('vendor_id')->constrained('vendors');
             $table->timestamps();
         });

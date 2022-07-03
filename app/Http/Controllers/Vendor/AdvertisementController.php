@@ -24,8 +24,9 @@ class AdvertisementController extends Controller
             ->vendor()
             ->first()
             ->advertisements()
-            ->when(request()->has('is_published'),
-                fn(Builder $builder) => $builder->where('is_published', request()->boolean('is_published')))
+            ->withCount('favoritedBy')
+            ->when(request()->has('status'),
+                fn(Builder $builder) => $builder->where('status', request('status')) )
            ->latest()
             ->paginate(request('per_page', 6));
     }
@@ -66,7 +67,7 @@ class AdvertisementController extends Controller
 
            if(filled($coverImagePath)) {
                $advertisement->update([
-                   'cover_image_path' => $coverImagePath
+                   'cover_image' => $coverImagePath
                ]);
            }
 

@@ -33,7 +33,9 @@ class AdvertisementRequest extends FormRequest
             'itinerary_file' => ['nullable', 'file', 'max:2048', 'mimes:docx,pdf,jpg'],
             'cover_image' => ['required', 'image', 'max:2048'],
             'duration' => ['string', 'required'],
-            'price' => ['required']
+            'price' => ['required'],
+            'status' => ['required'],
+            'tour_start_date' => ['required', 'date']
          ];
     }
 }
