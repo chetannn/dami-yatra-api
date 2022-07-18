@@ -14,6 +14,11 @@ class AdvertisementController extends Controller
     public function index() : LengthAwarePaginator
     {
        return Advertisement::query()
+             ->withCount([
+                 'purchasedBy' => function(Builder $query) {
+                   $query->where('status', 1);
+                 }
+             ])
             ->with(['vendor', 'tags'])
             ->withIsFavorite(auth()->user()->customer()->first())
             ->when(request()->filled('is_favorite'), function (Builder $query) {

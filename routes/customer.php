@@ -13,6 +13,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/saved-advertisements', [SavedAdvertisementController::class, 'index']);
     Route::post('/saved-advertisements/toggle', [SavedAdvertisementController::class, 'toggle'])->name('saved_advertisements.toggle');
     Route::post('/pay', [PaymentController::class, 'store']);
+    Route::get('/payments', [PaymentController::class, 'index']);
 });
 
 
