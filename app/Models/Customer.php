@@ -35,5 +35,10 @@ class Customer extends Model
         return $this->belongsToMany(Advertisement::class, 'advertisement_customer_views');
     }
 
+    public function payments() : HasMany
+    {
+        return $this->hasMany(CustomerPayment::class);
+    }
+
 
 }

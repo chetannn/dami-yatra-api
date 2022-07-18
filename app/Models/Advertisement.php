@@ -71,5 +71,10 @@ class Advertisement extends Model
         return $this->belongsToMany(Customer::class, 'saved_advertisements', 'advertisement_id');
     }
 
+    public function purchasedBy() : BelongsToMany
+    {
+        return $this->belongsToMany(Customer::class, 'customer_payments');
+    }
+
 
 }

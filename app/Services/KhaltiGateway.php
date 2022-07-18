@@ -15,8 +15,6 @@ class KhaltiGateway
             'amount' => $amount
         ]);
 
-        logger($response->json());
-
-        return $response->successful();
+        return $response->successful() || $response->status() == 400;
     }
 }

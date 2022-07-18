@@ -19,6 +19,9 @@ class AdvertisementController extends Controller
             ->when(request()->filled('is_favorite'), function (Builder $query) {
                    $query->whereRelation('favoritedBy', 'customer_id', auth()->user()->customer()->first()->id);
                })
+           ->when(request()->filled('is_purchased'), function (Builder $query) {
+               $query->whereRelation('purchasedBy', 'customer_id', auth()->user()->customer()->first()->id);
+           })
             ->where('ad_end_date', '>=', today())
             ->latest()
             ->paginate(request('per_page', 6));

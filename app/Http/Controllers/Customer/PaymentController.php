@@ -20,6 +20,16 @@ class PaymentController extends Controller
 
         if($gateway->verify(token: $validated['token'], amount: $validated['amount'])) {
             // create payment for logged in customer
+            auth()->user()->customer()->first()
+                ->payments()
+                ->create([
+                    'total_amount_with_tax' => $validated['amount'] / 100,
+                    'advertisement_id' => $validated['advertisement_id'],
+                    'status' => 1
+                ]);
+
+            // send email to vendor
+            // send invoice to customer
 
             return new JsonResponse(data: ['message' => 'Payment successful']);
         }
