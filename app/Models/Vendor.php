@@ -39,4 +39,10 @@ class Vendor extends Model
     {
         return $this->hasManyThrough(CustomerPayment::class, Advertisement::class);
     }
+
+    public function discussions() : HasMany
+    {
+        return $this->hasMany(AdvertisementDiscussion::class);
+    }
+
 }

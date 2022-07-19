@@ -34,7 +34,7 @@
 * [] Add Review to vendor after tour has successfully completed API
 * [] Customer Payment Process (this is a whole single module)
 * [] Analytics API
-
+* [] Have discussion over the advertisement (like community)
 
 ### Pricing Model
 

@@ -19,7 +19,7 @@ class AdvertisementController extends Controller
                    $query->where('status', 1);
                  }
              ])
-            ->with(['vendor', 'tags'])
+            ->with(['vendor', 'vendor.user', 'tags'])
             ->withIsFavorite(auth()->user()->customer()->first())
             ->when(request()->filled('is_favorite'), function (Builder $query) {
                    $query->whereRelation('favoritedBy', 'customer_id', auth()->user()->customer()->first()->id);

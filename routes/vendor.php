@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Vendor\AdvertisementController;
+use App\Http\Controllers\Vendor\AdvertisementDiscussionController;
 use App\Http\Controllers\Vendor\CouponController;
 use App\Http\Controllers\Vendor\CustomerPaymentController;
 use Illuminate\Support\Facades\Route;
@@ -17,5 +18,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Routes for coupons
     Route::apiResource('/coupons', CouponController::class);
     Route::get('/customer-payments', [CustomerPaymentController::class, 'index']);
-
+    Route::apiResource('advertisement-discussions', AdvertisementDiscussionController::class)->only('store', 'index');
 });

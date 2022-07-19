@@ -40,5 +40,10 @@ class Customer extends Model
         return $this->hasMany(CustomerPayment::class);
     }
 
+    public function discussions() : HasMany
+    {
+        return $this->hasMany(AdvertisementDiscussion::class);
+    }
+
 
 }

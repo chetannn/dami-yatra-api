@@ -53,23 +53,22 @@ class PaymentController extends Controller
             return new JsonResponse(data: ['message' => 'All of the advertisements are already booked.. please come back later'], status: Response::HTTP_BAD_REQUEST);
         }
 
-        if($gateway->verify(token: $validated['token'], amount: $validated['amount'])) {
-            auth()->user()->customer()->first()
-                ->payments()
-                ->create([
-                    'total_amount_with_tax' => $validated['amount'] / 100,
-                    'advertisement_id' => $validated['advertisement_id'],
-                    'status' => 1
-                ]);
+        if(!$gateway->verify(token: $validated['token'], amount: $validated['amount'])) {
+            return new JsonResponse(data: ['message' => 'Failed to Process Payment'], status: Response::HTTP_BAD_REQUEST);
+        }
+
+
+        auth()->user()->customer()->first()
+            ->payments()
+            ->create([
+                'total_amount_with_tax' => $validated['amount'] / 100,
+                'advertisement_id' => $validated['advertisement_id'],
+                'status' => 1
+            ]);
 
             // send email to vendor
             // send invoice to customer
 
             return new JsonResponse(data: ['message' => 'Payment successful']);
         }
-        else {
-            return new JsonResponse(data: ['message' => 'Failed to Process Payment'], status: Response::HTTP_BAD_REQUEST);
-        }
-
-    }
 }
