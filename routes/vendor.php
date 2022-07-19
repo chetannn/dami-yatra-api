@@ -18,5 +18,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Routes for coupons
     Route::apiResource('/coupons', CouponController::class);
     Route::get('/customer-payments', [CustomerPaymentController::class, 'index']);
-    Route::apiResource('advertisement-discussions', AdvertisementDiscussionController::class)->only('store', 'index');
+    Route::get('advertisement-discussions/{advertisement}', [AdvertisementDiscussionController::class, 'index']);
+    Route::post('advertisement-discussions', [AdvertisementDiscussionController::class, 'store']);
 });

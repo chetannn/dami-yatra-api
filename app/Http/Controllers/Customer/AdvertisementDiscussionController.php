@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
+use App\Models\AdvertisementDiscussion;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -13,8 +14,9 @@ class AdvertisementDiscussionController extends Controller
 {
     public function index(Advertisement $advertisement) : JsonResponse
     {
-        $discussions = auth()->user()->customer()->first()->discussions()
+        $discussions = AdvertisementDiscussion::query()
             ->whereBelongsTo($advertisement)
+            ->with('customer', 'customer.user', 'advertisement', 'advertisement.vendor.user')
             ->get();
 
         return new JsonResponse(data: $discussions);

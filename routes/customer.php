@@ -15,7 +15,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/saved-advertisements/toggle', [SavedAdvertisementController::class, 'toggle'])->name('saved_advertisements.toggle');
     Route::post('/pay', [PaymentController::class, 'store']);
     Route::get('/payments', [PaymentController::class, 'index']);
-    Route::apiResource('advertisement-discussions', AdvertisementDiscussionController::class)->only('store', 'index');
+    Route::get('advertisement-discussions/{advertisement}', [AdvertisementDiscussionController::class, 'index']);
+    Route::post('advertisement-discussions', [AdvertisementDiscussionController::class, 'store']);
 });
 
 
