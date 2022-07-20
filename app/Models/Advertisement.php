@@ -18,7 +18,6 @@ class Advertisement extends Model
     protected $fillable = [
         'title',
         'description',
-        'is_published',
         'ad_end_date',
         'itinerary_file',
         'duration',
@@ -28,6 +27,10 @@ class Advertisement extends Model
         'clicks',
         'quantity',
         'tour_start_date',
+        'meals',
+        'activities',
+        'accommodations',
+        'featured'
     ];
 
     protected $appends = [
@@ -38,6 +41,9 @@ class Advertisement extends Model
         'is_published' => 'boolean',
         'ad_end_date' => 'date',
         'tour_start_date' => 'date',
+        'meals' => 'array',
+        'accommodations' => 'array',
+        'activities' => 'array',
     ];
 
     public function tags() : BelongsToMany

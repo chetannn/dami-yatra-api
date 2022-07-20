@@ -28,14 +28,17 @@ class AdvertisementRequest extends FormRequest
             'description' => ['required', 'max:200'],
             'tags' => 'required',
             'tags.*' => ['required'],
-            'is_published' => ['required'],
             'ad_end_date' => ['nullable', 'required_if:is_published,1', 'date'],
             'itinerary_file' => ['nullable', 'file', 'max:2048', 'mimes:docx,pdf,jpg'],
             'cover_image' => ['required', 'image', 'max:2048'],
             'duration' => ['string', 'required'],
             'price' => ['required'],
             'status' => ['required'],
-            'tour_start_date' => ['required', 'date']
+            'tour_start_date' => ['required', 'date'],
+            'activities' => ['nullable', 'array'],
+            'meals' => ['nullable', 'array'],
+            'accommodations' => ['nullable', 'array'],
+            'featured' => ['required']
          ];
     }
 }

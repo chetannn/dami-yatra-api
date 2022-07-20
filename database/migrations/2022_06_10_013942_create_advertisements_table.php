@@ -20,10 +20,13 @@ return new class extends Migration
             $table->date('tour_start_date');
             $table->date('ad_end_date')->nullable();
             $table->integer('quantity');
-            $table->boolean('is_published')->default(0);
             $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('featured')->default(0);
             $table->float('price');
             $table->string('duration');
+            $table->json('accommodations')->nullable();
+            $table->json('activities')->nullable();
+            $table->json('meals')->nullable();
             $table->string('itinerary_file')->nullable();
             $table->string('cover_image')->nullable();
             $table->integer('clicks')->default(0);

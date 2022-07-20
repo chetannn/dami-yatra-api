@@ -81,6 +81,8 @@ class AdvertisementController extends Controller
 
             DB::rollBack();
 
+            logger($exception);
+
            return new JsonResponse($exception->getMessage(), Response::HTTP_BAD_REQUEST);
        }
 
