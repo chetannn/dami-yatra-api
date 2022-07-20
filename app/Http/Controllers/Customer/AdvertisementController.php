@@ -28,6 +28,7 @@ class AdvertisementController extends Controller
                $query->whereRelation('purchasedBy', 'customer_id', auth()->user()->customer()->first()->id);
            })
             ->where('ad_end_date', '>=', today())
+           ->where('status', 1)
             ->latest()
             ->paginate(request('per_page', 6));
     }

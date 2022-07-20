@@ -24,12 +24,11 @@ class AdvertisementRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'description' => ['required', 'max:200'],
-            'tags' => 'required',
-            'tags.*' => ['required'],
-            'ad_end_date' => ['nullable', 'required_if:is_published,1', 'date'],
-            'itinerary_file' => ['nullable', 'file', 'max:2048', 'mimes:docx,pdf,jpg'],
+            'title' => ['required', 'string'],
+            'description' => ['required', 'max:500'],
+            'tags' => ['nullable', 'required_if:status,1'],
+            'ad_end_date' => ['nullable', 'required_if:status,1', 'date'],
+            'itinerary_file' => ['nullable', 'required_if:status,1', 'file', 'max:2048', 'mimes:docx,pdf,jpg'],
             'cover_image' => ['required', 'image', 'max:2048'],
             'duration' => ['string', 'required'],
             'price' => ['required'],
