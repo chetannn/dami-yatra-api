@@ -34,7 +34,8 @@ class Advertisement extends Model
     ];
 
     protected $appends = [
-        'cover_image_url'
+        'cover_image_url',
+        'itinerary_file_url'
     ];
 
     protected $casts = [
@@ -59,6 +60,11 @@ class Advertisement extends Model
     public function getCoverImageUrlAttribute()
     {
         return $this->cover_image ? Storage::disk(config('FILESYSTEM_DISK'))->url($this->cover_image) : null;
+    }
+
+    public function getItineraryFileUrlAttribute()
+    {
+        return $this->itinerary_file ? Storage::disk(config('FILESYSTEM_DISK'))->url($this->itinerary_file) : null;
     }
 
     public function scopeWithIsFavorite(Builder $query, Customer $customer)
