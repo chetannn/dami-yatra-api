@@ -28,4 +28,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Route for featured ad payment
     Route::post('featured-ad-payment', [FeaturedAdPaymentController::class, 'store']);
+    Route::get('featured-ad-payment', [FeaturedAdPaymentController::class, 'index']);
 });

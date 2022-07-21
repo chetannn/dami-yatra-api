@@ -12,6 +12,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FeaturedAdPaymentController extends Controller
 {
+    public function index() : JsonResponse
+    {
+        $payments = auth()->user()
+            ->vendor()
+            ->first()
+            ->payments()
+            ->with('advertisement')
+            ->paginate(\request('per_page', 10));
+
+       return new JsonResponse(data: $payments);
+    }
+
     public function store(Request $request, KhaltiGateway $gateway) : JsonResponse
     {
        $validated = $request->validate([
