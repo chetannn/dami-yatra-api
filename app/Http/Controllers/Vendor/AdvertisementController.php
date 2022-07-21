@@ -133,7 +133,7 @@ class AdvertisementController extends Controller
 
     public function show(Advertisement $advertisement) : JsonResponse
     {
-        return new JsonResponse($advertisement->load('tags'));
+        return new JsonResponse($advertisement->load('tags', 'vendor'));
     }
 
     public function destroy(Advertisement $advertisement) : JsonResponse
