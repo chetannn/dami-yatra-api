@@ -37,6 +37,9 @@ class AdvertisementRequest extends FormRequest
             'activities' => ['nullable', 'array'],
             'meals' => ['nullable', 'array'],
             'accommodations' => ['nullable', 'array'],
+            'includes' => ['nullable', 'array'],
+            'excludes' => ['nullable', 'array'],
+            'major_cities' => ['nullable', 'array'],
             'featured' => ['required']
          ];
     }

@@ -27,6 +27,9 @@ return new class extends Migration
             $table->json('accommodations')->nullable();
             $table->json('activities')->nullable();
             $table->json('meals')->nullable();
+            $table->json('includes')->nullable();
+            $table->json('excludes')->nullable();
+            $table->json('major_cities')->nullable();
             $table->string('itinerary_file')->nullable();
             $table->string('cover_image')->nullable();
             $table->integer('clicks')->default(0);

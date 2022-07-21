@@ -30,6 +30,9 @@ class Advertisement extends Model
         'meals',
         'activities',
         'accommodations',
+        'includes',
+        'excludes',
+        'major_cities',
         'featured'
     ];
 
@@ -45,6 +48,9 @@ class Advertisement extends Model
         'meals' => 'array',
         'accommodations' => 'array',
         'activities' => 'array',
+        'includes' => 'array',
+        'excludes' => 'array',
+        'major_cities' => 'array',
     ];
 
     public function tags() : BelongsToMany
