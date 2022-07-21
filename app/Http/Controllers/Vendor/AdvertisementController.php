@@ -73,7 +73,7 @@ class AdvertisementController extends Controller
 
            DB::commit();
 
-          return new JsonResponse([], Response::HTTP_CREATED);
+          return new JsonResponse($advertisement, Response::HTTP_CREATED);
 
        }
 

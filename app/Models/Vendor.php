@@ -45,4 +45,9 @@ class Vendor extends Model
         return $this->hasMany(AdvertisementDiscussion::class);
     }
 
+    public function payments() : HasMany
+    {
+        return $this->hasMany(VendorPayment::class);
+    }
+
 }

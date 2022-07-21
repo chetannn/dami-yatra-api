@@ -37,7 +37,7 @@ class DisableExpiredAdvertisement implements ShouldQueue
             ->chunk(50, function ($advertisements) {
                 foreach ($advertisements as $advertisement) {
                    $advertisement->update([
-                       'status' => 0
+                       'status' => 3
                    ]);
                 }
             });

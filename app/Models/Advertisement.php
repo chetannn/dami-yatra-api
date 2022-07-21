@@ -34,7 +34,7 @@ class Advertisement extends Model
     ];
 
     protected $appends = [
-        'cover_image_path_url'
+        'cover_image_url'
     ];
 
     protected $casts = [
@@ -56,9 +56,9 @@ class Advertisement extends Model
         return $this->belongsTo(Vendor::class);
     }
 
-    public function getCoverImagePathUrlAttribute()
+    public function getCoverImageUrlAttribute()
     {
-        return $this->cover_image_path ? Storage::disk(config('FILESYSTEM_DISK'))->url($this->cover_image_path) : null;
+        return $this->cover_image ? Storage::disk(config('FILESYSTEM_DISK'))->url($this->cover_image) : null;
     }
 
     public function scopeWithIsFavorite(Builder $query, Customer $customer)
