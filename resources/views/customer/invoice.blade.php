@@ -15,7 +15,7 @@
 </head>
 
 <body style="font-size: 16px;line-height: 24px;font-family: 'Lato', sans-serif;color: #000000;background-color: #f1f1f1;">
-Dear Ayush, <strong>Your order has been placed.</strong>
+Dear {{$user->name}}, <strong>Your order has been placed.</strong>
 
 <div class="invoice-box" style="max-width: 800px;margin: auto;padding: 30px;border: 1px solid #eee;box-shadow: 0 0 10px rgba(0, 0, 0, .15);font-size: 16px;line-height: 24px;font-family: 'Lato', sans-serif;color: #555;background-color: white;">
     <img src="logo.png" alt="Company logo" width="20%"/><br>
@@ -29,12 +29,12 @@ Dear Ayush, <strong>Your order has been placed.</strong>
     <div style="position: relative;">
 
         <div style="right:0;position: absolute;text-align: end;color: #000000;" >
-            <strong>Invoice:#</strong> 101212<br />
-            <strong>Created:</strong> 02/08/2022<br />
+            <strong>Invoice:#</strong> {{$payment->id}}<br />
+            <strong>Created:</strong>{{$payment->created_at}}<br />
         </div>
 
         <div style="text-align: start;position: absolute;left:0;color: #000000;">
-            <strong>Customer Name:</strong> Ayush KC<br />
+            <strong>Customer Name:</strong>{{$user->name}}<br />
             <strong>Contact no:</strong> 9867678787
         </div>
     </div>
@@ -57,23 +57,21 @@ Dear Ayush, <strong>Your order has been placed.</strong>
                 Sub Amount
             </td>
         </tr>
-        <!-- {% for invoice_detail in invoice_details %} -->
         <tr class="item">
             <td style="padding: 5px;vertical-align: top;border-bottom: 1px solid #eee;color: #000000;">
-                Pokhara Tour Package
+              {{$payment->advertisement->title}}
             </td>
             <td style="padding: 5px;vertical-align: top;text-align: right;border-bottom: 1px solid #eee;color: #000000;">
-                10000
+                {{$payment->advertisement->price}}
             </td>
             <td style="padding: 5px;vertical-align: top;text-align: right;border-bottom: 1px solid #eee;color: #000000;">
                 1
             </td>
 
             <td style="padding: 5px;vertical-align: top;text-align: right;border-bottom: 1px solid #eee;color: #000000;">
-                10000
+                {{$payment->taxable_amount}}
             </td>
         </tr>
-        <!-- {% endfor %} -->
 
 
         <tr class="total">
@@ -82,18 +80,9 @@ Dear Ayush, <strong>Your order has been placed.</strong>
             <td></td>
             <td style="padding: 5px;vertical-align: top;text-align: right;border-top: 2px solid #4F46E5;font-weight: bold;color: #000000;">
 
-                Tax @13%: 1300
+                Tax @13%: {{ $payment->total_amount_with_tax - $payment->taxable_amount }}
             </td>
         </tr>
-        <!--             <tr class="total">
-                <td style="padding: 5px;vertical-align: top;"></td>
-                <td></td>
-                <td></td>
-                <td style="padding: 5px;vertical-align: top;text-align: right;border-top: 2px solid #4F46E5;font-weight: bold;color: #000000;">
-
-                   Shipping cost: Rs. {{shipping.shipping_cost}}
-        </td>
-    </tr> -->
 
         <tr class="total">
             <td style="padding: 5px;vertical-align: top;"></td>
@@ -101,7 +90,18 @@ Dear Ayush, <strong>Your order has been placed.</strong>
             <td></td>
             <td style="padding: 5px;vertical-align: top;text-align: right;border-top: 2px solid #4F46E5;font-weight: bold;color: #000000;">
 
-                Total: Rs. 11300
+                Discount: {{ $payment->discount_amount }}
+            </td>
+        </tr>
+
+
+        <tr class="total">
+            <td style="padding: 5px;vertical-align: top;"></td>
+            <td></td>
+            <td></td>
+            <td style="padding: 5px;vertical-align: top;text-align: right;border-top: 2px solid #4F46E5;font-weight: bold;color: #000000;">
+
+                Total: Rs. {{$payment->total_amount_with_tax}}
             </td>
         </tr>
     </table>

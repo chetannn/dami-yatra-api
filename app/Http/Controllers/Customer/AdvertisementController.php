@@ -54,7 +54,7 @@ class AdvertisementController extends Controller
 
     }
 
-    public function trackView(Advertisement $advertisement)
+    public function trackView(Advertisement $advertisement): JsonResponse
     {
         $advertisement->increment('clicks');
         return new JsonResponse([]);

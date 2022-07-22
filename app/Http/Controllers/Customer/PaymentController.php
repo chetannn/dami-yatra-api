@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AdvertisementExpiration;
+use App\Mail\CustomerInvoice;
 use App\Models\Advertisement;
 use App\Services\KhaltiGateway;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -60,7 +63,7 @@ class PaymentController extends Controller
         }
 
 
-        auth()->user()->customer()->first()
+       $payment = auth()->user()->customer()->first()
             ->payments()
             ->create([
                 'total_amount_with_tax' => $validated['amount'] / 100,
@@ -73,6 +76,13 @@ class PaymentController extends Controller
 
             // send email to vendor
             // send invoice to customer
+        $user = auth()->user();
+        $payment->fresh()->load('advertisement');
+
+
+
+        Mail::to($user->email)->send(new CustomerInvoice($user, $payment));
+
 
             return new JsonResponse(data: ['message' => 'Payment successful']);
         }
