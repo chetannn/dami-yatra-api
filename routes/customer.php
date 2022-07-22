@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Customer\AdvertisementController;
 use App\Http\Controllers\Customer\AdvertisementDiscussionController;
+use App\Http\Controllers\Customer\CouponVerificationController;
 use App\Http\Controllers\Customer\PaymentController;
 use App\Http\Controllers\Customer\SavedAdvertisementController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/payments', [PaymentController::class, 'index']);
     Route::get('advertisement-discussions/{advertisement}', [AdvertisementDiscussionController::class, 'index']);
     Route::post('advertisement-discussions', [AdvertisementDiscussionController::class, 'store']);
+
+    Route::post('coupon-verification', CouponVerificationController::class);
 });
 
 

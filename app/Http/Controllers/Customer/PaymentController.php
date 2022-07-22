@@ -29,7 +29,9 @@ class PaymentController extends Controller
         $validated = $request->validate([
             'amount' => ['required'],
             'token' => ['required'],
-            'advertisement_id' => ['required', Rule::exists('advertisements', 'id')]
+            'advertisement_id' => ['required', Rule::exists('advertisements', 'id')],
+            'coupon_id' => ['nullable', Rule::exists('coupons', 'id')],
+            'taxable_amount' => ['required']
         ]);
 
         // check if already paid for this advertisement
@@ -39,7 +41,7 @@ class PaymentController extends Controller
 
         // check if all the bookings are made for this particular advertisement
        $hasRemainingBookings = Advertisement::query()
-            ->where('quantity', '>=', function (Builder $query) use($validated) {
+            ->where('quantity', '>=', function ($query) use($validated) {
                 $query->from('customer_payments')
                     ->selectRaw('count(1)')
                     ->whereColumn('customer_payments.advertisement_id', 'advertisements.id')
@@ -63,6 +65,9 @@ class PaymentController extends Controller
             ->create([
                 'total_amount_with_tax' => $validated['amount'] / 100,
                 'advertisement_id' => $validated['advertisement_id'],
+                'taxable_amount' => $validated['taxable_amount'],
+                'discount_amount' => $request->input('discount_amount'),
+                'coupon_id' => $validated['coupon_id'],
                 'status' => 1
             ]);
 
