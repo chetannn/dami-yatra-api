@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmailVerificationNotificationController;
+use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\NewPasswordController;
@@ -49,3 +50,4 @@ Route::post('/reset-password', [NewPasswordController::class, 'store'])
     ->middleware(['guest:'. 'web'])
     ->name('password.update');
 
+Route::get('/advertisements', [LandingPageController::class, 'index']);
