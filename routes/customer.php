@@ -20,6 +20,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('advertisement-discussions', [AdvertisementDiscussionController::class, 'store']);
 
     Route::post('coupon-verification', CouponVerificationController::class);
+    Route::get('related-products', [AdvertisementController::class, 'relatedProducts']);
 });
 
 

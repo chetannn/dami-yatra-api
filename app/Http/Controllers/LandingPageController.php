@@ -17,6 +17,13 @@ class LandingPageController extends Controller
                 }
             ])
             ->with(['vendor', 'tags'])
+            ->when(request()->filled('keyword'), function ($query) {
+                $query->where(function ($query) {
+                    $keyword = request('keyword');
+                    $query->where('title', 'like', "%$keyword%")
+                        ->orWhere('description', 'like', "%$keyword%");
+                });
+            })
             ->where('ad_end_date', '>=', today())
             ->where('status', 1)
             ->latest()

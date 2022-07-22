@@ -60,4 +60,15 @@ class AdvertisementController extends Controller
         return new JsonResponse([]);
     }
 
+    public function relatedProducts() : JsonResponse
+    {
+        $ads = Advertisement::query()
+            ->where('status', 1)
+            ->inRandomOrder()
+            ->take(3)
+            ->get();
+
+        return new JsonResponse(data: $ads);
+    }
+
 }
