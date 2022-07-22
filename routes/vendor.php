@@ -4,6 +4,7 @@ use App\Http\Controllers\Vendor\AdvertisementController;
 use App\Http\Controllers\Vendor\AdvertisementDiscussionController;
 use App\Http\Controllers\Vendor\CouponController;
 use App\Http\Controllers\Vendor\CustomerPaymentController;
+use App\Http\Controllers\Vendor\DashboardController;
 use App\Http\Controllers\Vendor\FeaturedAdPaymentController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,4 +30,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Route for featured ad payment
     Route::post('featured-ad-payment', [FeaturedAdPaymentController::class, 'store']);
     Route::get('featured-ad-payment', [FeaturedAdPaymentController::class, 'index']);
+
+    // Rote for stats
+    Route::get('/stats', DashboardController::class);
 });
