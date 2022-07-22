@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -35,7 +36,17 @@ class AdvertisementController extends Controller
 
     public function show(Advertisement $advertisement) : JsonResponse
     {
-        return new JsonResponse($advertisement->load('vendor', 'tags'));
+        return new JsonResponse(
+            $advertisement
+                ->load([
+                    'vendor',
+                    'tags'
+                ])
+            ->loadCount([
+                'favoritedBy' => function($query) {
+                     $query->where('customer_id',  auth()->user()->customer()->first()->id);
+                 }])
+            );
     }
 
     public function featuredAdvertisements()
@@ -45,7 +56,8 @@ class AdvertisementController extends Controller
 
     public function trackView(Advertisement $advertisement)
     {
-
+        $advertisement->increment('clicks');
+        return new JsonResponse([]);
     }
 
 }
